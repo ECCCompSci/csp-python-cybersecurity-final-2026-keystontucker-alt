@@ -2,8 +2,8 @@
 ╔══════════════════════════════════════════════════════════════╗
 ║        CSP Python & Cybersecurity Final Exam - 2026          ║
 ║                                                              ║
-║  Name:  _______________________________________________      ║
-║  Date:  _______________________________________________      ║
+║  Name:  Keyston Tucker__________________________      ║
+║  Date:  5/6/26_______________________      ║
 ╚══════════════════════════════════════════════════════════════╝
 
 GITHUB CLASSROOM INSTRUCTIONS:
@@ -80,11 +80,23 @@ print("\n--- Section 1: Python Basics ---")
 # ── 1B. Grade Calculator [16 pts] ────────────────────────
 # Write a function called letter_grade(score) that takes a
 # numeric score (0-100) and returns the letter grade:
-#   A = 90-100  |  B = 80-89  |  C = 70-79  |  D = 60-69  |  F = <60
+#A = 90-100  |  B = 80-89  |  C = 70-79  |  D = 60-69  |  F = <60
 
 def letter_grade(score):
-    # YOUR CODE HERE
-    pass
+    if score >= 90:
+        return "A"
+    elif score >= 80:
+        return "B"
+    elif score >= 70:
+        return "C"
+    elif score >= 60:
+        return "D"
+    else:
+        return "F"
+
+print("Score 90 ->", letter_grade(90))  # A
+print("Score 82 ->", letter_grade(82))  # B
+print("Score 55 ->", letter_grade(55))  # F
 
 # Test your function (do not change these lines)
 test_scores = [100, 88, 73, 61, 45]
@@ -94,17 +106,17 @@ for s in test_scores:
 
 # ── 1C. List Operations [14 pts] ─────────────────────────
 # Given this list of cybersecurity threats:
-threats = ["phishing", "malware", "ransomware", "spyware", "DDoS"]
-
+threats = ["phishing", "malware", "ransomware", "spyware", "DDoS",]
 # 1. Add "brute force" to the end of the list
 # YOUR CODE HERE
-
+threats.append("Brute force")
 # 2. Print the total number of threats
 # YOUR CODE HERE
-
+print(f" total threats:{len(threats)}")
 # 3. Print each threat in ALL CAPS using a loop
 # YOUR CODE HERE
-
+for threat in threats:
+    print(threat.upper())
 
 # ════════════════════════════════════════════════════════════
 # SECTION 2 — File I/O                              [40 pts]
@@ -147,8 +159,15 @@ print("\n--- Section 3: Caesar Cipher ---")
 # Example: encrypt_message("Hello!", 4) -> "Lipps!"
 
 def encrypt_message(text, shift):
-    # YOUR CODE HERE
-    pass
+  encrypt_message = ""
+  for char in text:
+        if char.isalpha():
+            base = ord('A') if char.isupper() else ord('a')
+            encrypt_message += chr((ord(char) - base + shift) % 26 + base)
+        else:
+            encrypt_message += char
+  return encrypt_message
+
 
 
 # ── 3B. Decrypt [20 pts] ─────────────────────────────────
@@ -158,8 +177,18 @@ def encrypt_message(text, shift):
 # Example: decrypt_message("Lipps!", 4) -> "Hello!"
 
 def decrypt_message(text, shift):
-    # YOUR CODE HERE
-    pass
+     return encrypt_message(text, -shift)
+
+print("\n=== Caesar Cipher ===")
+message = "Hello, World!"
+shift   = 3
+encrypted = encrypt_message(message, shift)
+decrypted = encrypt_message(encrypted, shift)
+print(f"  Original:  {message}")
+print(f"  Encrypted: {encrypted}")
+print(f"  Decrypted: {decrypted}")
+
+
 
 
 # Test your cipher (do not change these lines)
@@ -196,11 +225,28 @@ print("\n--- Section 4: Password Strength Checker ---")
 #       "feedback": ["Too short (need 10+ chars)",
 #                    "Missing special character"]}
 
-def is_strong_password(password):
-    # YOUR CODE HERE
-    pass
 
+def check_password(pw):
+    feedback = []
+    strong = True
 
+    if len(pw) < 12:
+        feedback.append("Make it at least 12 characters long")
+        strong = False
+    if not any(c.isupper() for c in pw):
+        feedback.append("Add at least one uppercase letter")
+        strong = False
+    if not any(c.islower() for c in pw):
+        feedback.append("Add at least one lowercase letter")
+        strong = False
+    if not any(c.isdigit() for c in pw):
+        feedback.append("Add at least one number")
+        strong = False
+    if not any(c in "!@#$%^&*()-_+=" for c in pw):
+        feedback.append("Add at least one special character (!@#$%^&*()-_+=)")
+        strong = False
+
+    return {"strong": strong, "feedback": feedback}
 # Test passwords (do not change these lines)
 test_passwords = [
     "abc",
@@ -211,7 +257,7 @@ test_passwords = [
 ]
 
 for pw in test_passwords:
-    result = is_strong_password(pw)
+    result = check_password(pw)
     status = "STRONG ✅" if result["strong"] else "WEAK ❌"
     print(f"  '{pw}' -> {status}")
     if result["feedback"]:
@@ -261,7 +307,23 @@ security_log = [
 ]
 
 # YOUR CODE HERE
+print("\n=== Creating Secure Folder Structure ===")
 
+folders = {
+    "secure_vault/public":  "Public folder: files here can be shared with anyone.\n",
+    "secure_vault/private": "Private folder: files here are confidential. Authorized users only.\n",
+    "secure_vault/logs":    "Logs folder: activity logs for auditing and security monitoring.\n",
+}
+
+for folder, description in folders.items():
+    os.makedirs(folder, exist_ok=True)
+    readme_path = os.path.join(folder, "README.txt")
+    with open(readme_path, "w") as f:
+        f.write(description)
+    print(f"  Created: {folder}/README.txt")
+
+print("\nFolder structure created! Explore 'secure_vault/' to see it.")
+print("\nCybersecurity practice complete!")
 
 # ════════════════════════════════════════════════════════════
 print("\n" + "=" * 60)
